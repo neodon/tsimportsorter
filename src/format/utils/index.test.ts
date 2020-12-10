@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import { normalizePath } from './';
+import { normalizePath, minimizePath } from './';
 
 suite('utils', () => {
   suite('normalizePath', () => {
@@ -113,6 +113,32 @@ suite('utils', () => {
       assert.deepStrictEqual(normalizePath('C:\\a\\'), 'C:/a/');
       assert.deepStrictEqual(normalizePath('a\\\\b'), 'a/b');
       assert.deepStrictEqual(normalizePath('a\\\\b\\\\'), 'a/b/');
+    });
+  });
+
+  suite('minimizePath', () => {
+    test('trailing-slash', () => {
+      assert.deepStrictEqual(minimizePath(undefined), '');
+      assert.deepStrictEqual(minimizePath(null), '');
+      assert.deepStrictEqual(minimizePath(''), '');
+      assert.deepStrictEqual(minimizePath('a'), 'a');
+      assert.deepStrictEqual(minimizePath('a/'), 'a');
+      assert.deepStrictEqual(minimizePath('a/b'), 'a/b');
+      assert.deepStrictEqual(minimizePath('a/b/'), 'a/b');
+      assert.deepStrictEqual(minimizePath('.'), '.');
+      assert.deepStrictEqual(minimizePath('./'), '.');
+      assert.deepStrictEqual(minimizePath('./a'), './a');
+      assert.deepStrictEqual(minimizePath('./a/'), './a');
+      assert.deepStrictEqual(minimizePath('./a/b'), './a/b');
+      assert.deepStrictEqual(minimizePath('./a/b/'), './a/b');
+      assert.deepStrictEqual(minimizePath('..'), '..');
+      assert.deepStrictEqual(minimizePath('../'), '..');
+      assert.deepStrictEqual(minimizePath('../a'), '../a');
+      assert.deepStrictEqual(minimizePath('../a/'), '../a');
+      assert.deepStrictEqual(minimizePath('../a/b'), '../a/b');
+      assert.deepStrictEqual(minimizePath('../a/b/'), '../a/b');
+      assert.deepStrictEqual(minimizePath('../..'), '../..');
+      assert.deepStrictEqual(minimizePath('../../'), '../..');
     });
   });
 });

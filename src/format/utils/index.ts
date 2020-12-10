@@ -13,3 +13,7 @@ export function normalizePath(str: string | undefined | null) {
     ? r + '/'
     : r;
 }
+
+export function minimizePath(str: string | undefined | null) {
+  return (str || '').replace(/\/$/, '')
+}
